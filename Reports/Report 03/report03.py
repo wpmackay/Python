@@ -15,9 +15,11 @@ t=25
 x_0=0.5
 b_transient=linspace(0,3,4)
 color=['b','r','g','m']
+
 figure(1)
 for j in xrange(4):
     mayfly_population(x_0,b_transient[j],t,color[j])
+
 xlabel('Time (years)')
 ylabel('x')
 title('Transient Behavior of Mayfly Population for b Values From 0 to 3')
