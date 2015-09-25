@@ -20,7 +20,7 @@ for j in xrange(4):
     mayfly_population(x_0,b_transient[j],t,color[j])
 xlabel('Time (years)')
 ylabel('x')
-title('Transient Behavior of Mayfly Population for b Values From 0 to 4')
+title('Transient Behavior of Mayfly Population for b Values From 0 to 3')
 legend1 = Line2D([], [], color='blue', label='b=0')
 legend2 = Line2D([], [], color='red', label='b=1')
 legend3 = Line2D([], [], color='green', label='b=2')
