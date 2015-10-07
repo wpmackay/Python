@@ -24,18 +24,16 @@ def find_epsilon():
             n+=1
         else:
             return 2**-(n-1)
-
 def max_float():
     n=1.
     x=2.
     count=0
     while True:
-        y=x**n
-        if y>1.797*10**308 and y-x**(n-0.001)<10**306:
-            return y
-        else:
-            n+=.001
-            count+=1
+        try: y=x**n
+        except: 
+            return x**(n-0.0005)
+            break
+        n+=0.0005
             
 def min_float():
     n=1.
