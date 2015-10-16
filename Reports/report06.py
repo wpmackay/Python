@@ -14,16 +14,16 @@ def sun_position(R,t):
 
 def diff_P_binary(P,t):
     G=1.0
-    M=0.5
-    R=0.5
+    M1,M2=0.5,0.5
+    R=.5
     x,y,v_x,v_y=P
     r3=(sqrt(x**2+y**2))**3
     x1,x2,y1,y2=sun_position(R,t)
-    a_x=(-G*M*(x-x1))/r3+(-G*M*(x-x2))/r3
-    a_y=(-G*M*(y-y1))/r3+(-G*M*(y-y2))/r3
+    a_x=(-G*M1*(x-x1))/r3+(-G*M1*(x-x2))/r3
+    a_y=(-G*M2*(y-y1))/r3+(-G*M2*(y-y2))/r3
     return array([v_x,v_y,a_x,a_y])
 
-def heun_orbit_binary(steps,h,x=2.5,y=0.,v_x=0., v_y=0.5): #x,y,v_x,v_y are default initial conditions
+def heun_orbit_binary(steps,h,x=1.3,y=0.,v_x=0., v_y=0.8): #x,y,v_x,v_y are default initial conditions
     R=0.5
     orbit=empty((steps,4))
     P=array([x,y,v_x,v_y])
@@ -53,10 +53,10 @@ sun1_point, = plot([],[], 'yo', ms=12)
 sun1_line, = plot([], [], 'cyan')
 sun2_point, = plot([],[], 'yo', ms=12)
 sun2_line, = plot([], [], 'cyan')
-sizex = 1+abs(max(orbit[:,0]))
-sizey = 1+abs(max(orbit[:,1]))
-xlim(-sizex, sizey)
-ylim(-sizex, sizey)
+sizex = 5#1+abs(max(orbit[:,0]))
+sizey = 5#1+abs(max(orbit[:,1]))
+xlim(-sizex, sizex)
+ylim(-sizey, sizey)
 
 def init():
     point.set_data([], [])
