@@ -14,16 +14,17 @@ def sun_position(R,t):
 
 def diff_P_binary(P,t):
     G=1.0
-    M1,M2=0.5,0.5
-    R=.5
+    M=0.5
+    R=0.5
     x,y,v_x,v_y=P
-    r3=(sqrt(x**2+y**2))**3
     x1,x2,y1,y2=sun_position(R,t)
-    a_x=(-G*M1*(x-x1))/r3+(-G*M1*(x-x2))/r3
-    a_y=(-G*M2*(y-y1))/r3+(-G*M2*(y-y2))/r3
+    r31=(sqrt((x-x1)**2+(y-y1)**2))**3
+    r32=(sqrt((x-x2)**2+(y-y2)**2))**3
+    a_x=(-G*M*(x-x1))/r31+(-G*M*(x-x2))/r32
+    a_y=(-G*M*(y-y1))/r31+(-G*M*(y-y2))/r32
     return array([v_x,v_y,a_x,a_y])
 
-def heun_orbit_binary(steps,h,x=1.3,y=0.,v_x=0., v_y=0.8): #x,y,v_x,v_y are default initial conditions
+def heun_orbit_binary(steps,h,x=3,y=0.,v_x=0., v_y=0.5): #x,y,v_x,v_y are default initial conditions
     R=0.5
     orbit=empty((steps,4))
     P=array([x,y,v_x,v_y])
@@ -77,4 +78,26 @@ def animate(i):
     return line, point, sun1_point, sun1_line, sun2_point, sun2_line,
 
 ani=animation.FuncAnimation(fig, animate, init_func=init, frames=steps, interval=20, blit=True, repeat=True)
+
+#Now simulating many orbits for an array of initial x values and y velocities
+end=5
+initial_x=linspace(1,3,5)
+initial_v_y=linspace(0,1,5)
+steps=1000
+h=0.1
+i=1
+figure(figsize=(8, 8))
+for row in range(1, end + 1):
+    for col in range(1, end + 1):
+        orbit=heun_orbit_binary(steps,h,x=initial_x[row-1],y=0.,v_x=0., v_y=initial_v_y[col-1])
+        subplot(end, end, i)
+        plot(orbit[:,0], orbit[:,1])
+        xticks([])
+        yticks([])
+        if i % 5 == 1:
+            ylabel(str(row))
+        if i > 20:
+            xlabel(str(col))
+        i += 1
+        
 show()
