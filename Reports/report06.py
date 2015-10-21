@@ -34,12 +34,15 @@ def heun_orbit_binary(steps,h,x=3,y=0.,v_x=0., v_y=0.5): #x,y,v_x,v_y are defaul
         P+=(h/2)*(diff_P_binary(P,h*i)+diff_P_binary(P_tilde,h*i))
     return orbit
 
+def plot_orbit(orbit):
+    plot(orbit[:, 0], orbit[:, 1])
+
 #Simulating Orbits
 steps=5000
 h=0.1
 R=0.5
 
-orbit = heun_orbit_binary(steps, h)
+orbit_anim = heun_orbit_binary(steps, h,x=2,y=0.,v_x=0., v_y=0.7)
 sun_orbit=empty((steps,4))
 for i in xrange(steps):
     sun_orbit[i]=sun_position(R,h*i)
@@ -54,8 +57,8 @@ sun1_point, = plot([],[], 'yo', ms=12)
 sun1_line, = plot([], [], 'cyan')
 sun2_point, = plot([],[], 'yo', ms=12)
 sun2_line, = plot([], [], 'cyan')
-sizex = 5#1+abs(max(orbit[:,0]))
-sizey = 5#1+abs(max(orbit[:,1]))
+sizex = 5#1+abs(max(orbit_anim[:,0]))
+sizey = 5#1+abs(max(orbit_anim[:,1]))
 xlim(-sizex, sizex)
 ylim(-sizey, sizey)
 
@@ -69,8 +72,8 @@ def init():
     return line, point, sun1_point, sun1_line, sun2_point, sun2_line,
 
 def animate(i):
-    point.set_data(orbit[i, 0], orbit[i, 1])
-    line.set_data(orbit[:i, 0], orbit[:i, 1])
+    point.set_data(orbit_anim[i, 0], orbit_anim[i, 1])
+    line.set_data(orbit_anim[:i, 0], orbit_anim[:i, 1])
     sun1_point.set_data(sun_orbit[i,0],sun_orbit[i,2])
     sun1_line.set_data(sun_orbit[:i,0],sun_orbit[:i,2])
     sun2_point.set_data(sun_orbit[i,1],sun_orbit[i,3])
@@ -80,24 +83,26 @@ def animate(i):
 ani=animation.FuncAnimation(fig, animate, init_func=init, frames=steps, interval=20, blit=True, repeat=True)
 
 #Now simulating many orbits for an array of initial x values and y velocities
-end=5
-initial_x=linspace(1,3,5)
-initial_v_y=linspace(0,1,5)
+end=7
+initial_x=linspace(1.9,3.1,end)
+initial_v_y=linspace(0.3,0.9,end)
 steps=1000
 h=0.1
 i=1
-figure(figsize=(8, 8))
+figure(figsize=(10, 10))
+xlim(-4,4)
+ylim(-4,4)
 for row in range(1, end + 1):
     for col in range(1, end + 1):
         orbit=heun_orbit_binary(steps,h,x=initial_x[row-1],y=0.,v_x=0., v_y=initial_v_y[col-1])
         subplot(end, end, i)
-        plot(orbit[:,0], orbit[:,1])
+        plot_orbit(orbit)
         xticks([])
         yticks([])
-        if i % 5 == 1:
-            ylabel(str(row))
-        if i > 20:
-            xlabel(str(col))
+        if i % end == 1:
+            ylabel(str(initial_x[row-1]))
+        if i > end**2-end:
+            xlabel(str(initial_v_y[col-1]))
         i += 1
-        
+suptitle('Planetary Orbits for Different Initial Conditions')
 show()
