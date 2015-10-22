@@ -81,11 +81,14 @@ def animate(i):
     return line, point, sun1_point, sun1_line, sun2_point, sun2_line,
 
 ani=animation.FuncAnimation(fig, animate, init_func=init, frames=steps, interval=20, blit=True, repeat=True)
+plot_orbit(orbit_anim)
 
 #Now simulating many orbits for an array of initial x values and y velocities
 end=7
-initial_x=linspace(1.9,3.1,end)
-initial_v_y=linspace(0.3,0.9,end)
+initial_x1=linspace(0.6,1.8,end)
+initial_v_y1=linspace(0.7,1.3,end)
+initial_x2=linspace(2.0,3.2,end)
+initial_v_y2=linspace(0.3,0.9,end)
 steps=1000
 h=0.1
 i=1
@@ -94,15 +97,33 @@ xlim(-4,4)
 ylim(-4,4)
 for row in range(1, end + 1):
     for col in range(1, end + 1):
-        orbit=heun_orbit_binary(steps,h,x=initial_x[row-1],y=0.,v_x=0., v_y=initial_v_y[col-1])
+        orbit=heun_orbit_binary(steps,h,x=initial_x1[row-1],y=0.,v_x=0., v_y=initial_v_y1[col-1])
         subplot(end, end, i)
         plot_orbit(orbit)
         xticks([])
         yticks([])
         if i % end == 1:
-            ylabel(str(initial_x[row-1]))
+            ylabel(str(initial_x1[row-1]))
         if i > end**2-end:
-            xlabel(str(initial_v_y[col-1]))
+            xlabel(str(initial_v_y1[col-1]))
         i += 1
-suptitle('Planetary Orbits for Different Initial Conditions')
+suptitle('Planetary Orbits for Different Initial Conditions (0.6<x<1.8, 0.7<$v_y$<1.3)')
+
+i=1
+figure(figsize=(10, 10))
+xlim(-4,4)
+ylim(-4,4)
+for row in range(1, end + 1):
+    for col in range(1, end + 1):
+        orbit=heun_orbit_binary(steps,h,x=initial_x2[row-1],y=0.,v_x=0., v_y=initial_v_y2[col-1])
+        subplot(end, end, i)
+        plot_orbit(orbit)
+        xticks([])
+        yticks([])
+        if i % end == 1:
+            ylabel(str(initial_x2[row-1]))
+        if i > end**2-end:
+            xlabel(str(initial_v_y2[col-1]))
+        i += 1
+suptitle('Planetary Orbits for Different Initial Conditions (2.0<x<3.2, 0.3<$v_y$<0.9)')
 show()
