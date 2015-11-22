@@ -135,6 +135,7 @@ print "The probability of getting exactly 29 hits is approximately",prob
 #Part 5 - Sums of Random Numbers, and the Central Limit Theorem
 
 figure(9)
+ylim([0,1.5])
 for i in xrange(2,9):
     results=rand(i,n)
     totals=sum(results, axis=0)
@@ -150,9 +151,20 @@ for i in xrange(2,9):
 title('Histograms of Sums of 2-8 Random Numbers shifted by M/2 and Divided by $M^{1/2}$')
 legend()
 
+u = rand(n*10)
+v = (32*u)**(1./5)
 figure(11)
+hist(v, normed=True, bins=50, fc='c', label='v = g(u)')
+x = linspace(0, 2, 400)
+y = (5./32)*x**4
+plot(x, y, 'r', lw=2, label='p(v)')
+xlabel('v')
+legend(loc='upper left')
+
+figure(12)
+ylim([0,1.5])
 for i in xrange(2,9):
-    results=2*(rand(i,n))**(1./3)
+    results=(32*(rand(i,n)))**(1./5)
     totals=sum(results, axis=0)
     hist(totals,bins=50, normed=True,histtype='step',label=str(i))
 title('Histograms of Sums of 2-8 Non-Uniform Random Numbers')
@@ -182,7 +194,7 @@ s2=stock_sim(s_0,t_max,mu,sigma2,trials)
 t=linspace(0,t_max,t_max)
 s=stock_sim(s_0,t_max,mu,sigma1,5)
 
-figure(12)
+figure(13)
 for i in xrange(5):
     plot(t,s[i,:],label=str(i))
 title('Several Runs of stock_sim for 1 Year')
@@ -193,7 +205,7 @@ loss1=final_price1<1
 p_loss1=float(sum(loss1))/trials
 print "Expected Value","(", u'\u03c3',"= 0.05",")","=", EV1
 print "Probability of Losing Money =", p_loss1
-figure(13)
+figure(14)
 hist(final_price1,50)
 title(r'Histogram of Final Stock Price $(\sigma=0.05)$')
 
@@ -203,7 +215,7 @@ loss2=final_price2<1
 p_loss2=float(sum(loss2))/trials
 print "Expected Value","(", u'\u03c3',"= 0.01",")","=", EV2
 print "Probability of Losing Money =", p_loss2
-figure(14)
+figure(15)
 hist(final_price2,50)
 title(r'Histogram of Final Stock Price $(\sigma=0.01)$')
 
