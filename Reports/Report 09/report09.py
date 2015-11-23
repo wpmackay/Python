@@ -24,8 +24,8 @@ def stumbledown(f,p,stepsize,n=1000):
             nfails=0
             stepsize=stepsize/2
         if stepsize<(10**-9):
-            break      
-    return p,i
+            return p,i      
+    
 
 def GPS(X):
     xi=array([5.53,4.44,0.045,6.67])
@@ -44,7 +44,7 @@ xlabel('x (m)')
 ylabel('y (m)')
 title('Satellite Positions')
 
-p=[3,3]
+p=[20,-20]
 stepsize=.5
 
 figure(2)
@@ -64,5 +64,6 @@ legend(handles=[blue_line,red_line,green_line],loc='upper left')
 
 
 print 'The position of the marker is:',position
+print 'The stumbledown algorithm took',iterations,'steps to converge'
 
 show()
